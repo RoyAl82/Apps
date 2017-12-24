@@ -10,3 +10,10 @@ import Foundation
 
 print("Hello, World!")
 
+var ele = MessageHandler()
+
+var newMsg = ele.encry(Message: "Hello You")
+
+print (newMsg)
+
+
