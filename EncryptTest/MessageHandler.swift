@@ -32,7 +32,7 @@ class MessageHandler: NSObject {
         print(seed)
         for i in Message.utf16{
             
-            msgEncrypt.append(String( Int(i) + randCode()))
+            //msgEncrypt.append(String( Int(i) + randCode()))
             //msgEncrypt
             
             print(msgEncrypt)
