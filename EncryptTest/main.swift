@@ -13,6 +13,8 @@ import Foundation
 var ele = MessageHandler()
 
 var newMsg = ele.encry(Message: "Hello You")
+var ReMsg = ele.decry(Message: newMsg)
+
 
 print (newMsg)
 
