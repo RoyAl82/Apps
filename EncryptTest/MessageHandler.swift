@@ -30,6 +30,8 @@ class MessageHandler: NSObject {
         srand48(seed)
         
         print(seed)
+        print(String(seed).count)
+        
         var binC: UInt32 = 0b0
         var bin: UInt8 = 0b0
         var count = 0
@@ -42,15 +44,13 @@ class MessageHandler: NSObject {
                 //msgEncrypt = msgEncrypt << 32
                 print(msgEncrypt)
                 print(UINT32_MAX)
-                var temp = binC + randCode()
-                print(temp)
-                msgEncrypt.append( String(temp))
+                //var temp = binC + randCode()
+                //print(temp)
+                msgEncrypt.append( String(binC + randCode()))
                 print(msgEncrypt)
                 binC = 0b0
                 bin = 0b0
                 count = 0
-                
-                
             }
             
             bin = UInt8(i)
@@ -65,18 +65,40 @@ class MessageHandler: NSObject {
             
             print(msgEncrypt)
         }
-                if binC.nonzeroBitCount > 1
+        
+        if binC.nonzeroBitCount > 1
         {
-            var temp = binC + randCode()
-            print(temp)
-            msgEncrypt.append( String(temp))
+            //var temp = binC + randCode()
+            //print(temp)
+            msgEncrypt.append( String(binC + randCode()))
             print(msgEncrypt)
             binC = 0b0
             bin = 0b0
             count = 0
         }
+        let index = Int(sqrt(Double(msgEncrypt.count)))
+        
+        let index2 = msgEncrypt.index(msgEncrypt.startIndex, offsetBy: index)
+        msgEncrypt.insert(contentsOf: String(seed), at: msgEncrypt.index(before: index2))
+        //msgEncrypt.index(after: String.Index(index)).append(String(seed))
+        
+        print(msgEncrypt)
         //return Message
         return msgEncrypt
     }
 
+    func decry(Message: String) -> String {
+        
+        let num = String(seed).count
+        let lenght = Message.count - num
+        let index = Int(sqrt(Double(lenght)))
+        let index2 = Message.index(Message.startIndex, offsetBy: index)
+        let seedS = Message[index..<(index + num)]
+    
+        
+        seed = Int(seedS)!
+        print(seed)
+        
+        return " "
+    }
 }
