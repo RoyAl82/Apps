@@ -88,7 +88,7 @@ class MessageHandler: NSObject {
     }
 
     func decry(Message: String) -> String {
-        
+        var message = Message
         let num = String(seed).count
         let lenght = Message.count - num
         let index = Int(sqrt(Double(lenght)))
@@ -99,6 +99,7 @@ class MessageHandler: NSObject {
         
         
         seed = Int(seedS)!
+        message.removeSubrange(index2..<num1)
         print(seed)
         
         return " "
