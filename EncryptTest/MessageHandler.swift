@@ -91,10 +91,7 @@ class MessageHandler: NSObject {
         
         let num = String(seed).count
         let lenght = Message.count - num
-        let index = Int(sqrt(Double(lenght)))
-        let index2 = Message.index(Message.startIndex, offsetBy: index)
-        let seedS = Message[index..<(index + num)]
-    
+      
         
         seed = Int(seedS)!
         print(seed)
