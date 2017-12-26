@@ -46,7 +46,7 @@ class MessageHandler: NSObject {
                 print(UINT32_MAX)
                 //var temp = binC + randCode()
                 //print(temp)
-                msgEncrypt.append( String(binC + randCode()))
+                msgEncrypt.append( String(UInt64(binC) + UInt64(randCode())))
                 print(msgEncrypt)
                 binC = 0b0
                 bin = 0b0
@@ -91,16 +91,29 @@ class MessageHandler: NSObject {
         var message = Message
         let num = String(seed).count
         let lenght = Message.count - num
-        let index = Int(sqrt(Double(lenght)))
-        let num1 = Message.index(Message.startIndex, offsetBy: num)
-        let index2 = Message.index(Message.startIndex, offsetBy: (index - 1))
-        let seed1S = String(Message[index2...])
-        let seedS = String(seed1S[..<num1])
+        let index = Int(sqrt(Double(lenght))) - 1
+        let indexSE2 = Message.index(Message.startIndex, offsetBy: num)
+        let indexSER = Message.index(Message.startIndex, offsetBy: index)
+        //let indexSR = Message.index(Message.startIndex, offsetBy: index)
+        let indexSR2 = Message.index(Message.startIndex, offsetBy: (index + num))
         
+        let seed1S = String(Message[indexSER...])
+        let seedS = String(seed1S[..<indexSE2])
+        let dig = String(UINT64_MAX)
+        let numIndex = dig.count
+        let indexDM = message.index(message.startIndex, offsetBy: numIndex)
         
+        let firstDM = String(Message[..<indexDM])
+        let secDM = UInt64(firstDM)
+        let thirdDM = secDM! - UInt64(randCode())
+        let forthDM = UInt32(thirdDM)
+        let fiftDM = 
         seed = Int(seedS)!
-        message.removeSubrange(index2..<num1)
+        message.removeSubrange(indexSER..<indexSR2)
         print(seed)
+        
+        
+        
         
         return " "
     }
