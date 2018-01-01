@@ -6,72 +6,64 @@
 //  Copyright © 2017 Roicxy Alonso. All rights reserved.
 //
 
+
 import Cocoa
 
 class MessageHandler: NSObject {
     
-    private var seed: Int
+    private var seed: UInt
     
     override init()
     {
-        self.seed = Int(NSDate.timeIntervalSinceReferenceDate)
+        self.seed = UInt(NSDate.timeIntervalSinceReferenceDate)
     }
     
-    
-    private func randCode() -> UInt32 {
+    private func randCode() -> UInt64 {
         
-        var randValue = arc4random()
-        return UInt32(randValue)
+        
+        let randValue = EncryptM.random()
+        
+        let val = UInt64(UInt64(randValue) | (UInt64(randValue) << 32))
+        
+        return val
     }
     
     func encry(Message: String) -> String {
         var msgEncrypt: String = ""
-        seed = Int(NSDate.timeIntervalSinceReferenceDate)
-        srand48(seed)
+        seed = UInt(NSDate.timeIntervalSinceReferenceDate)
         
-        print(seed)
-        print(String(seed).count)
+        EncryptM.sRandom(UInt32(seed))
         
-        var binC: UInt32 = 0b0
-        var bin: UInt8 = 0b0
+        var binC: UInt64 = 0b0
+        var bin: UInt32 = 0b0
         var count = 0
         
-        for i in Message.utf8{
+        for i in Message.unicodeScalars{
             
-            if count == 4
+            if count == 2
             {
-                print(msgEncrypt)
-                //msgEncrypt = msgEncrypt << 32
-                print(msgEncrypt)
-                print(UINT32_MAX)
-                //var temp = binC + randCode()
-                //print(temp)
-                msgEncrypt.append( String(UInt64(binC) + UInt64(randCode())))
-                print(msgEncrypt)
+                let ran = UInt64(randCode())
+                msgEncrypt.append( String(binC + ran))
+                
                 binC = 0b0
                 bin = 0b0
                 count = 0
             }
             
-            bin = UInt8(i)
-            print(bin)
-            binC = binC << 8
-            print(binC)
-            binC = binC + UInt32(bin)
-            print(binC)
+            bin = UInt32(i.value)
+            
+            binC = binC << 32
+            
+            binC = binC + UInt64(bin)
+            
             count += 1
             
-            //msgEncrypt
-            
-            print(msgEncrypt)
         }
         
         if binC.nonzeroBitCount > 1
         {
-            //var temp = binC + randCode()
-            //print(temp)
             msgEncrypt.append( String(binC + randCode()))
-            print(msgEncrypt)
+            
             binC = 0b0
             bin = 0b0
             count = 0
@@ -80,10 +72,7 @@ class MessageHandler: NSObject {
         
         let index2 = msgEncrypt.index(msgEncrypt.startIndex, offsetBy: index)
         msgEncrypt.insert(contentsOf: String(seed), at: msgEncrypt.index(before: index2))
-        //msgEncrypt.index(after: String.Index(index)).append(String(seed))
         
-        print(msgEncrypt)
-        //return Message
         return msgEncrypt
     }
 
@@ -94,27 +83,46 @@ class MessageHandler: NSObject {
         let index = Int(sqrt(Double(lenght))) - 1
         let indexSE2 = Message.index(Message.startIndex, offsetBy: num)
         let indexSER = Message.index(Message.startIndex, offsetBy: index)
-        //let indexSR = Message.index(Message.startIndex, offsetBy: index)
+        
         let indexSR2 = Message.index(Message.startIndex, offsetBy: (index + num))
         
         let seed1S = String(Message[indexSER...])
         let seedS = String(seed1S[..<indexSE2])
+        seed = UInt(seedS)!
+        
+        EncryptM.sRandom(UInt32(seed))
+        message.removeSubrange(indexSER..<indexSR2)
+        
+        
         let dig = String(UINT64_MAX)
         let numIndex = dig.count
-        let indexDM = message.index(message.startIndex, offsetBy: numIndex)
+        var indexDM: String.Index = message.startIndex
         
-        let firstDM = String(Message[..<indexDM])
-        let secDM = UInt64(firstDM)
-        let thirdDM = secDM! - UInt64(randCode())
-        let forthDM = UInt32(thirdDM)
-        let fiftDM = 
-        seed = Int(seedS)!
-        message.removeSubrange(indexSER..<indexSR2)
-        print(seed)
+        var strVal: String = ""
+        var DM = message
         
+        while DM.count > numIndex
+        {
+            
+            let indexPDM = indexDM
+            indexDM = DM.index(DM.startIndex, offsetBy: ((numIndex)  - 1))
+            DM = String(DM[indexPDM...])
+            let firstDM = String(DM[..<indexDM])
+            
+            let secDM = UInt64(firstDM)
+            
+            let ran = randCode()
+            
+            let thirdDM = secDM! - ran
+            let forthDM = UInt64(thirdDM)
+            let firstV = forthDM & 0xFFFF
+            let secondV = forthDM >> 32
+            
+            strVal.append(String(UnicodeScalar(UInt32(secondV))!))
+            strVal.append(String(UnicodeScalar(UInt32(firstV))!))
         
+        }
         
-        
-        return " "
+        return strVal
     }
 }

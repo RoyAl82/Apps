@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B06F8CD51FF56C3800F8BBCE /* EncryptM.m in Sources */ = {isa = PBXBuildFile; fileRef = B06F8CD41FF56C3800F8BBCE /* EncryptM.m */; };
 		B0A8DB1F1FE429EF007D9E24 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A8DB1E1FE429EF007D9E24 /* main.swift */; };
 		B0A8DB261FE42A6B007D9E24 /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A8DB251FE42A6B007D9E24 /* MessageHandler.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B06F8CD31FF56C3800F8BBCE /* EncryptTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EncryptTest-Bridging-Header.h"; sourceTree = "<group>"; };
+		B06F8CD41FF56C3800F8BBCE /* EncryptM.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EncryptM.m; sourceTree = "<group>"; };
+		B06F8CD71FF9478B00F8BBCE /* EncryptM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EncryptM.h; sourceTree = "<group>"; };
 		B0A8DB1B1FE429EF007D9E24 /* EncryptTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = EncryptTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0A8DB1E1FE429EF007D9E24 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B0A8DB251FE42A6B007D9E24 /* MessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
@@ -43,8 +47,11 @@
 		B0A8DB121FE429EF007D9E24 = {
 			isa = PBXGroup;
 			children = (
+				B06F8CD71FF9478B00F8BBCE /* EncryptM.h */,
+				B06F8CD41FF56C3800F8BBCE /* EncryptM.m */,
 				B0A8DB1D1FE429EF007D9E24 /* EncryptTest */,
 				B0A8DB1C1FE429EF007D9E24 /* Products */,
+				B06F8CD31FF56C3800F8BBCE /* EncryptTest-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,6 +104,7 @@
 				TargetAttributes = {
 					B0A8DB1A1FE429EF007D9E24 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -123,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B06F8CD51FF56C3800F8BBCE /* EncryptM.m in Sources */,
 				B0A8DB261FE42A6B007D9E24 /* MessageHandler.swift in Sources */,
 				B0A8DB1F1FE429EF007D9E24 /* main.swift in Sources */,
 			);
@@ -240,8 +249,12 @@
 		B0A8DB231FE429EF007D9E24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "EncryptTest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -249,8 +262,11 @@
 		B0A8DB241FE429EF007D9E24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "EncryptTest-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

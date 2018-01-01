@@ -12,10 +12,11 @@ import Foundation
 
 var ele = MessageHandler()
 
-var newMsg = ele.encry(Message: "Hello You")
+var newMsg = ele.encry(Message: "Hello You! Happy New Year!! !")
 var ReMsg = ele.decry(Message: newMsg)
 
 
 print (newMsg)
+print (ReMsg)
 
 
