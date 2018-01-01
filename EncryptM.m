@@ -14,8 +14,8 @@
 {
     srandom(seed);
 }
-+(double) Random
++(double) randomN: (double) limit
 {
-    return random();
+    return random() % (int)(limit);
 }
 @end

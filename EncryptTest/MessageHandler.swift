@@ -21,14 +21,30 @@ class MessageHandler: NSObject {
     private func randCode() -> UInt64 {
         
         
-        let randValue = EncryptM.random()
+        var randValue = UInt32(EncryptM.randomN(Double(UINT64_MAX) / 1.8))
         
-        let val = UInt64(UInt64(randValue) | (UInt64(randValue) << 32))
+        var val = UInt64(UInt64(randValue) | (UInt64(randValue) << 32))
         
-        return val
+        while(true)
+        {
+            if(String(val).count >= 13)
+            {
+                return val
+            }
+            else
+            {
+                randValue = UInt32(EncryptM.randomN(Double(UINT64_MAX) / 1.8))
+                
+                val = UInt64(UInt64(randValue) | (UInt64(randValue) << 32))
+            }
+        }
+        
+        
+        
     }
     
     func encry(Message: String) -> String {
+        
         var msgEncrypt: String = ""
         seed = UInt(NSDate.timeIntervalSinceReferenceDate)
         
@@ -42,8 +58,13 @@ class MessageHandler: NSObject {
             
             if count == 2
             {
-                let ran = UInt64(randCode())
-                msgEncrypt.append( String(binC + ran))
+                //let ran = UInt64(randCode())
+                //let StrRan = String(ran)
+                //let StrBinC = String(binC)
+                
+                //let binF = String(binC ^ ran)
+                
+                msgEncrypt.append( String(UInt64(binC ^ randCode())))
                 
                 binC = 0b0
                 bin = 0b0
@@ -54,15 +75,15 @@ class MessageHandler: NSObject {
             
             binC = binC << 32
             
-            binC = binC + UInt64(bin)
+            binC = binC | UInt64(bin)
             
             count += 1
             
         }
         
-        if binC.nonzeroBitCount > 1
+        if binC.nonzeroBitCount > 0
         {
-            msgEncrypt.append( String(binC + randCode()))
+            msgEncrypt.append( String(binC ^ randCode()))
             
             binC = 0b0
             bin = 0b0
@@ -77,10 +98,11 @@ class MessageHandler: NSObject {
     }
 
     func decry(Message: String) -> String {
+        
         var message = Message
         let num = String(seed).count
-        let lenght = Message.count - num
-        let index = Int(sqrt(Double(lenght))) - 1
+        //let lenght = Message.count - num
+        let index = Int(sqrt(Double(Message.count - num))) - 1
         let indexSE2 = Message.index(Message.startIndex, offsetBy: num)
         let indexSER = Message.index(Message.startIndex, offsetBy: index)
         
@@ -93,9 +115,8 @@ class MessageHandler: NSObject {
         EncryptM.sRandom(UInt32(seed))
         message.removeSubrange(indexSER..<indexSR2)
         
-        
-        let dig = String(UINT64_MAX)
-        let numIndex = dig.count
+        var ran = randCode()
+        var numIndex = String(ran).count
         var indexDM: String.Index = message.startIndex
         
         var strVal: String = ""
@@ -105,21 +126,22 @@ class MessageHandler: NSObject {
         {
             
             let indexPDM = indexDM
-            indexDM = DM.index(DM.startIndex, offsetBy: ((numIndex)  - 1))
+            indexDM = DM.index(DM.startIndex, offsetBy: ((numIndex)))
             DM = String(DM[indexPDM...])
             let firstDM = String(DM[..<indexDM])
             
             let secDM = UInt64(firstDM)
             
-            let ran = randCode()
-            
-            let thirdDM = secDM! - ran
-            let forthDM = UInt64(thirdDM)
-            let firstV = forthDM & 0xFFFF
-            let secondV = forthDM >> 32
+            let forthDM = secDM! ^ ran
+            //let forthDM = UInt64(thirdDM)
+            let firstV = UInt32(forthDM & 0xFFFFFFFF)
+            let secondV = UInt32(forthDM >> 32)
             
             strVal.append(String(UnicodeScalar(UInt32(secondV))!))
             strVal.append(String(UnicodeScalar(UInt32(firstV))!))
+            
+            ran = randCode()
+            numIndex = String(ran).count
         
         }
         

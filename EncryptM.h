@@ -13,7 +13,7 @@
 
 
 @interface EncryptM: NSObject
-+(double) Random;
++(double) randomN: (double) limit;
 +(void) sRandom: (unsigned int) seed;
 
 @end
