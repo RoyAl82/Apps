@@ -39,8 +39,6 @@ class MessageHandler: NSObject {
             }
         }
         
-        
-        
     }
     
     func encry(Message: String) -> String {
@@ -58,12 +56,6 @@ class MessageHandler: NSObject {
             
             if count == 2
             {
-                //let ran = UInt64(randCode())
-                //let StrRan = String(ran)
-                //let StrBinC = String(binC)
-                
-                //let binF = String(binC ^ ran)
-                
                 msgEncrypt.append( String(UInt64(binC ^ randCode())))
                 
                 binC = 0b0
@@ -101,7 +93,7 @@ class MessageHandler: NSObject {
         
         var message = Message
         let num = String(seed).count
-        //let lenght = Message.count - num
+        
         let index = Int(sqrt(Double(Message.count - num))) - 1
         let indexSE2 = Message.index(Message.startIndex, offsetBy: num)
         let indexSER = Message.index(Message.startIndex, offsetBy: index)
@@ -133,7 +125,6 @@ class MessageHandler: NSObject {
             let secDM = UInt64(firstDM)
             
             let forthDM = secDM! ^ ran
-            //let forthDM = UInt64(thirdDM)
             let firstV = UInt32(forthDM & 0xFFFFFFFF)
             let secondV = UInt32(forthDM >> 32)
             
